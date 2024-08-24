@@ -1,4 +1,6 @@
 # Leetcode
+24.03.2024 - 07.05.2024 = 6 weeks
+![leetcode.png](src%2Fleetcode.png)
 
 ## 3sum
 ```python
@@ -33,7 +35,6 @@ class Solution:
 
         return res
 ```
-![3sum.png](..%2Fimg%2F3sum.png)
 
 ## Group Anagrams
 ```python
@@ -59,7 +60,6 @@ class Solution:
                     break
         return result
 ```
-![Group Anagrams.png](..%2Fimg%2FGroup%20Anagrams.png)
 
 ## Longest Substring Without Repeating Characters
 ```python
@@ -78,7 +78,6 @@ class Solution:
         
         return maxLength
 ```
-![Longest Substring Without Repeating Characters.png](..%2Fimg%2FLongest%20Substring%20Without%20Repeating%20Characters.png)
 
 ## Longest Palindromic Substring
 ```python
@@ -108,7 +107,6 @@ class Solution:
         
         return s[start:end+1]
 ```
-![Longest Palindromic Substring.png](..%2Fimg%2FLongest%20Palindromic%20Substring.png)
 
 ## Increasing Triplet Subsequence
 ```python
@@ -124,7 +122,6 @@ class Solution:
                 return True
         return False
 ```
-![Increasing Triplet Subsequence.png](..%2Fimg%2FIncreasing%20Triplet%20Subsequence.png)
 
 ## Set Matrix Zeroes
 ```python
@@ -148,210 +145,5 @@ class Solution:
         if shouldFillFirstCol:
             for row in matrix:
                 row[0] = 0
-```
-![Set Matrix Zeroes.png](..%2Fimg%2FSet%20Matrix%20Zeroes.png)
-
-## Count and Say
-```python
-class Solution:
-    def countAndSay(self, n: int) -> str:
-        def count_til_diff(s: str):
-            res = ''
-            i = 0
-            temp = ''
-            while i < len(s):
-                count = 1
-                check = s[i]
-                if check == temp:
-                    break
-                temp = check
-                for j in range(i + 1, len(s)):  
-                    if s[j] != check:
-                        i = j
-                        break
-                    count += 1
-                    if j == len(s) - 1:
-                        i = j
-                        break
-                res += str(count) + check
-            return res
-        if n == 1:
-            return '1'
-        return count_til_diff(self.countAndSay(n - 1))
-```
-![Count and Say.png](..%2Fimg%2FCount%20and%20Say.png)
-
-## Add Two Numbers
-```python
-class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = ListNode()
-        res = dummy
-        total = carry = 0
-        while l1 or l2 or carry:
-            total = carry
-            if l1:
-                total += l1.val
-                l1 = l1.next
-            if l2:
-                total += l2.val
-                l2 = l2.next
-            num = total % 10
-            carry = total // 10
-            dummy.next = ListNode(num)
-            dummy = dummy.next
-        return res.next
-```
-![Add Two Numbers.png](..%2Fimg%2FAdd%20Two%20Numbers.png)
-
-## Odd Even Linked List
-```python
-class Solution:
-    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head == None or head.next == None : return head 
-        odd = ListNode(0) 
-        odd_ptr = odd
-        even = ListNode(0)
-        even_ptr = even 
-        idx = 1 
-        while head != None :
-            if idx % 2 == 0:
-                even_ptr.next = head
-                even_ptr = even_ptr.next
-            else:
-                odd_ptr.next = head
-                odd_ptr = odd_ptr.next
-            head = head.next
-            idx+=1
-        even_ptr.next = None
-        odd_ptr.next = even.next
-        return odd.next
-```
-![Odd Even Linked List.png](..%2Fimg%2FOdd%20Even%20Linked%20List.png)
-
-## Binary Tree Inorder Traversal
-```python
-class Solution:
-    def inorderTraversal(self, root):
-        res = []
-        self.helper(root, res)
-        return res
-
-    def helper(self, root, res):
-        if root is not None:
-            self.helper(root.left, res)
-            res.append(root.val)
-            self.helper(root.right, res)
-```
-![Binary Tree Inorder Traversal.png](..%2Fimg%2FBinary%20Tree%20Inorder%20Traversal.png)
-
-## Binary Tree Zigzag Level Order Traversal
-```python
-class Solution:
-    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        lvls = defaultdict(list)
-        q = []
-        q.append((root,0))
-        while len(q)>0:
-            cur_n, cur_lvl = q.pop(0)
-            if cur_n != None:
-                lvls[cur_lvl].append(cur_n.val)
-                q.append((cur_n.left, cur_lvl+1))
-                q.append((cur_n.right, cur_lvl+1))
-        ans = []
-        for lvl in lvls:
-            if lvl%2==0:
-                ans.append(lvls[lvl])
-            else:
-                ans.append(lvls[lvl][::-1])
-        return ans
-```
-![Binary Tree Zigzag Level Order Traversal.png](..%2Fimg%2FBinary%20Tree%20Zigzag%20Level%20Order%20Traversal.png)
-
-## Construct Binary Tree from Preorder and Inorder Traversal
-```python
-class Solution:
-    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        val_to_inorder_idx = {inorder[i]: i for i in range(len(inorder))}
-
-        def buildTreePartition(preorder, inorder_start, inorder_end):
-            if not preorder or inorder_start < 0 or inorder_end > len(inorder):
-                return None
-
-            root_val = preorder[0]
-            root_inorder_idx = val_to_inorder_idx[root_val]
-            if root_inorder_idx > inorder_end or root_inorder_idx < inorder_start:
-                return None
-            
-            root = TreeNode(preorder.pop(0))
-            root.left = buildTreePartition(preorder, inorder_start, root_inorder_idx - 1)
-            root.right = buildTreePartition(preorder, root_inorder_idx + 1, inorder_end)
-
-            return root
-
-        return buildTreePartition(preorder, 0, len(inorder) - 1)
-```
-![Construct Binary Tree from Preorder and Inorder Traversal.png](..%2Fimg%2FConstruct%20Binary%20Tree%20from%20Preorder%20and%20Inorder%20Traversal.png)
-
-## Populating Next Right Pointers in Each Node
-```python
-class Solution:
-    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
-        q = deque([root])
-        while q:
-            n = len(q)
-            for i in range(n):
-                node = q.popleft()
-                if i < n - 1: 
-                    node.next = q[0]
-                if node and node.left: 
-                    q.append(node.left)
-                if node and node.right: 
-                    q.append(node.right)
-        return root
-```
-![Populating Next Right Pointers in Each Node.png](..%2Fimg%2FPopulating%20Next%20Right%20Pointers%20in%20Each%20Node.png)
-
-## Kth Smallest Element in a BST
-```python
-class Solution:
-    def kthSmallest(self, root, k):
-        values = []
-        self.inorder(root, values)
-        return values[k - 1]
-
-    def inorder(self, root, values):
-        if root is None:
-            return
-        self.inorder(root.left, values)
-        values.append(root.val)
-        self.inorder(root.right, values)
-```
-![Kth Smallest Element in a BST.png](..%2Fimg%2FKth%20Smallest%20Element%20in%20a%20BST.png)
-
-## Number of Islands
-```python
-class Solution:
-    def numIslands(self, grid: List[List[str]]) -> int:
-        if not grid:
-            return 0
         
-        def dfs(i, j):
-            if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or grid[i][j] != '1':
-                return
-            grid[i][j] = '0'  # visited
-            dfs(i+1, j)
-            dfs(i-1, j)
-            dfs(i, j+1)
-            dfs(i, j-1)
-        
-        num_islands = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == '1':
-                    num_islands += 1
-                    dfs(i, j)
-        
-        return num_islands
 ```
-![Number of Islands.png](..%2Fimg%2FNumber%20of%20Islands.png)
